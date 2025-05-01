@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheldev - Загрузите наши приложения</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать в Cheldev</h1>
+        <nav>
+            <ul>
+                <li><a href="#applications">Приложения</a></li>
+                <li><a href="#admin">Администраторы</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="applications">
+            <h2>Загрузите наши приложения</h2>
+            <ul>
+                <li><a href="app1.zip">Приложение 1</a></li>
+                <li><a href="app2.zip">Приложение 2</a></li>
+                <li><a href="app3.zip">Приложение 3</a></li>
+            </ul>
+        </section>
+        <section id="admin">
+            <h2>Панель администратора</h2>
+            <form action="admin.php" method="post">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Войти</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Cheldev. Все права защищены.</p>
+    </footer>
+</body>
+</html>
