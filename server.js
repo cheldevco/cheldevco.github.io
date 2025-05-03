@@ -25,9 +25,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('uploads'));
 app.use(express.static('public'));
 
-// Пользователи (для примера)
+// Пользователи (логин: admin, пароль: admin)
 const users = {
-    admin: 'password' // Логин: admin, Пароль: password
+    admin: 'admin' // Логин: admin, Пароль: admin
 };
 
 // Главная страница
