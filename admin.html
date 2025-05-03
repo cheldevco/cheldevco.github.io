@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора</title>
+</head>
+<body>
+    <h1>Панель администратора</h1>
+    <form id="uploadForm">
+        <label for="file">Выберите файл для загрузки:</label>
+        <input type="file" id="file" name="file" required>
+        <button type="submit">Загрузить</button>
+    </form>
+    <script>
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            event.preventDefault();
+            alert('Файл загружен (это имитация, реальная загрузка не реализована).');
+        };
+    </script>
+</body>
+</html>
