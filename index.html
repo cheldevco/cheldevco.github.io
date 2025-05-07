@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Данные репозитория</title>
+    <title>Загрузка файлов в репозиторий</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,8 +21,13 @@
     <h1>Содержимое репозитория: files-cheldev</h1>
     <ul id="repo-files"></ul>
 
+    <h2>Загрузка файла</h2>
+    <input type="file" id="file-input" required>
+    <button id="upload-button">Загрузить</button>
+
     <script>
         const repoUrl = 'https://api.github.com/repos/CHELICK5832/files-cheldev/contents/';
+        const token = 'YOUR_GITHUB_TOKEN'; // Замените на ваш токен доступа GitHub
 
         async function fetchRepoContents() {
             try {
@@ -40,12 +45,52 @@
 
         function displayRepoContents(files) {
             const fileList = document.getElementById('repo-files');
+            fileList.innerHTML = ''; // Очистить список перед добавлением новых файлов
             files.forEach(file => {
                 const listItem = document.createElement('li');
                 listItem.textContent = file.name;
                 fileList.appendChild(listItem);
             });
         }
+
+        document.getElementById('upload-button').addEventListener('click', async () => {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const content = event.target.result;
+                    const base64Content = btoa(content); // Кодируем в Base64
+                    const filePath = encodeURIComponent(file.name);
+
+                    try {
+                        const response = await fetch(repoUrl + filePath, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `token ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: 'Загрузка файла',
+                                content: base64Content
+                            })
+                        });
+
+                        if (response.ok) {
+                            alert('Файл успешно загружен!');
+                            fetchRepoContents(); // Обновить список файлов
+                        } else {
+                            alert('Ошибка при загрузке файла.');
+                        }
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                        alert('Ошибка при загрузке файла.');
+                    }
+                };
+                reader.readAsBinaryString(file);
+            }
+        });
 
         // Загружаем данные при загрузке страницы
         window.onload = fetchRepoContents;
