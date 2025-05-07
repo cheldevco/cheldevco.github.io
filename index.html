@@ -3,15 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cheldev - Главная</title>
+    <title>Данные репозитория</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Добро пожаловать в Cheldev</h1>
-    <h2>Доступные приложения</h2>
-    <ul>
-        <li><a href="app1.zip" download>Приложение 1</a></li>
-        <li><a href="app2.zip" download>Приложение 2</a></li>
-    </ul>
-    <p><a href="login.html">Вход в панель администратора</a></p>
+    <h1>Содержимое репозитория: files-cheldev</h1>
+    <ul id="repo-files"></ul>
+
+    <script>
+        const repoUrl = 'https://api.github.com/repos/CHELICK5832/files-cheldev/contents/';
+
+        async function fetchRepoContents() {
+            try {
+                const response = await fetch(repoUrl);
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке данных');
+                }
+                const data = await response.json();
+                displayRepoContents(data);
+            } catch (error) {
+                console.error('Ошибка:', error);
+                document.getElementById('repo-files').innerText = 'Не удалось загрузить данные.';
+            }
+        }
+
+        function displayRepoContents(files) {
+            const fileList = document.getElementById('repo-files');
+            files.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name;
+                fileList.appendChild(listItem);
+            });
+        }
+
+        // Загружаем данные при загрузке страницы
+        window.onload = fetchRepoContents;
+    </script>
 </body>
 </html>
