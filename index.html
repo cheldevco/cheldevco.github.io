@@ -1,99 +1,191 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Загрузка файлов в репозиторий</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin: 5px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheldev</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+      }
+      header {
+          background: #35424a;
+          color: #ffffff;
+          padding: 10px 0;
+          text-align: center;
+      }
+      nav {
+          margin: 15px 0;
+      }
+      nav a {
+          margin: 0 15px;
+          color: white;
+          text-decoration: none;
+      }
+      main {
+          padding: 20px;
+      }
+      footer {
+          text-align: center;
+          padding: 10px 0;
+          background: #35424a;
+          color: white;
+          position: fixed;
+          width: 100%;
+          bottom: 0;
+      }
+      .download-link {
+          display: block;
+          margin: 10px 0;
+          padding: 10px;
+          background: #35424a;
+          color: white;
+          text-decoration: none;
+          text-align: center;
+          border-radius: 5px;
+      }
+      .download-link:hover {
+          background: #455a64;
+      }
+      .admin-panel {
+          display: none; /* Скрываем панель админа по умолчанию */
+          margin-top: 20px;
+          padding: 20px;
+          background: #e0e0e0;
+          border-radius: 5px;
+      }
+      .login-panel {
+          margin-top: 20px;
+          padding: 20px;
+          background: #e0e0e0;
+          border-radius: 5px;
+      }
+      .spacer {
+          height: 800px; /* Высота для создания пространства */
+      }
+  </style>
 </head>
 <body>
-    <h1>Содержимое репозитория: files-cheldev</h1>
-    <ul id="repo-files"></ul>
+  <header>
+      <h1>Добро пожаловать в Cheldev</h1>
+      <nav>
+          <a href="#home">Главная</a>
+          <a href="#apps">Приложения</a>
+          <a href="#admin" onclick="showLoginPanel(event)">Панель Администратора</a>
+      </nav>
+  </header>
+  <main>
+      <section id="home">
+          <h2>О нашей компании</h2>
+          <p>Cheldev - это инновационная компания, занимающаяся разработкой программного обеспечения.</p>
+          <p>Мы стремимся предоставлять нашим клиентам самые современные решения и услуги.</p>
+          <p>Наша команда состоит из высококвалифицированных специалистов, которые работают над созданием продуктов, соответствующих самым высоким стандартам.</p>
+          <p>Мы ценим обратную связь от наших клиентов и постоянно работаем над улучшением наших услуг.</p>
+          <p>С нами вы можете быть уверены в качестве и надежности предоставляемых решений.</p>
+      </section>
+      <section id="apps">
+          <h2>Страница приложений</h2>
+          <p>Здесь вы можете скачать наши приложения:</p>
+          <div id="appList"></div> <!-- Список загруженных приложений -->
+          <a href="path/to/your/file1.zip" class="download-link" download>Скачать Приложение 1</a>
+          <a href="path/to/your/file2.zip" class="download-link" download>Скачать Приложение 2</a>
+          <a href="path/to/your/file3.zip" class="download-link" download>Скачать Приложение 3</a>
+          <div class="content-block">
+              <p>Мы предлагаем широкий спектр приложений для различных нужд. Наша команда постоянно работает над новыми проектами, чтобы удовлетворить потребности наших пользователей.</p>
+              <p>Следите за новыми обновлениями и релизами на нашем сайте!</p>
+              <p>Если у вас есть вопросы или предложения, не стесняйтесь обращаться к нам через форму обратной связи.</p>
+          </div>
+      </section>
+      <section id="login" class="login-panel">
+          <h2>Вход в Панель Администратора</h2>
+          <form id="loginForm" onsubmit="login(event)">
+              <label for="username">Логин:</label>
+              <input type="text" id="username" name="username" required>
+              <label for="password">Пароль:</label>
+              <input type="password" id="password" name="password" required>
+              <button type="submit">Войти</button>
+          </form>
+          <div id="loginMessage"></div>
+      </section>
+      <section id="admin" class="admin-panel">
+          <h2>Панель Администратора</h2>
+          <form id="uploadForm" onsubmit="uploadApp(event)">
+              <label for="file">Выберите файл для загрузки:</label>
+              <input type="file" id="file" name="file" required>
+              <button type="submit">Опубликовать приложение</button>
+          </form>
+          <div id="uploadMessage"></div>
+      </section>
+      <section class="spacer"></section> <!-- Пустой блок в самом низу страницы -->
+  </main>
+  <footer>
+      <p>&copy; 2025 Cheldev. Все права защищены.</p>
+  </footer>
+  <script>
+      let isAdmin = false; // Переменная для проверки статуса администратора
 
-    <h2>Загрузка файла</h2>
-    <input type="file" id="file-input" required>
-    <button id="upload-button">Загрузить</button>
+      function showLoginPanel(event) {
+          event.preventDefault(); // Предотвращаем переход по ссылке
+          const loginPanel = document.querySelector('.login-panel');
+          loginPanel.style.display = 'block';
+          window.location.hash = '#login'; // Переход к секции входа
+      }
 
-    <script>
-        const repoUrl = 'https://api.github.com/repos/CHELICK5832/files-cheldev/contents/';
-        const token = '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'; // Замените на ваш токен доступа GitHub
+      function login(event) {
+          event.preventDefault(); // Предотвращаем отправку формы
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
 
-        async function fetchRepoContents() {
-            try {
-                const response = await fetch(repoUrl);
-                if (!response.ok) {
-                    throw new Error('Ошибка при загрузке данных');
-                }
-                const data = await response.json();
-                displayRepoContents(data);
-            } catch (error) {
-                console.error('Ошибка:', error);
-                document.getElementById('repo-files').innerText = 'Не удалось загрузить данные.';
-            }
-        }
+          // Проверка логина и пароля
+          if (username === 'admin' && password === 'admin') {
+              isAdmin = true;
+              document.querySelector('.admin-panel').style.display = 'block';
+              document.querySelector('.login-panel').style.display = 'none';
+              document.getElementById('loginMessage').innerText = 'Вы успешно вошли в панель администратора.';
+              loadApps(); // Загружаем приложения при входе
+          } else {
+              document.getElementById('loginMessage').innerText = 'Неверный логин или пароль.';
+          }
+      }
 
-        function displayRepoContents(files) {
-            const fileList = document.getElementById('repo-files');
-            fileList.innerHTML = ''; // Очистить список перед добавлением новых файлов
-            files.forEach(file => {
-                const listItem = document.createElement('li');
-                listItem.textContent = file.name;
-                fileList.appendChild(listItem);
-            });
-        }
+      function uploadApp(event) {
+          event.preventDefault(); // Предотвращаем отправку формы
+          const fileInput = document.getElementById('file');
+          const file = fileInput.files[0];
+          if (file) {
+              const appList = document.getElementById('appList');
+              const newLink = document.createElement('a');
+              newLink.href = URL.createObjectURL(file);
+              newLink.className = 'download-link';
+              newLink.download = file.name;
+              newLink.innerText = 'Скачать ' + file.name;
 
-        document.getElementById('upload-button').addEventListener('click', async () => {
-            const fileInput = document.getElementById('file-input');
-            const file = fileInput.files[0];
+              // Сохраняем информацию о приложении в localStorage
+              let apps = JSON.parse(localStorage.getItem('apps')) || [];
+              apps.push({ name: file.name, url: newLink.href });
+              localStorage.setItem('apps', JSON.stringify(apps));
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    const content = event.target.result;
-                    const base64Content = btoa(content); // Кодируем в Base64
-                    const filePath = encodeURIComponent(file.name);
+              appList.appendChild(newLink); // Добавляем новое приложение в список
+              document.getElementById('uploadMessage').innerText = 'Приложение успешно опубликовано: ' + file.name;
+              fileInput.value = ''; // Очищаем поле ввода
+          }
+      }
 
-                    try {
-                        const response = await fetch(repoUrl + filePath, {
-                            method: 'PUT',
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                message: 'Загрузка файла',
-                                content: base64Content
-                            })
-                        });
-
-                        if (response.ok) {
-                            alert('Файл успешно загружен!');
-                            fetchRepoContents(); // Обновить список файлов
-                        } else {
-                            alert('Ошибка при загрузке файла.');
-                        }
-                    } catch (error) {
-                        console.error('Ошибка:', error);
-                        alert('Ошибка при загрузке файла.');
-                    }
-                };
-                reader.readAsBinaryString(file);
-            }
-        });
-
-        // Загружаем данные при загрузке страницы
-        window.onload = fetchRepoContents;
-    </script>
+      function loadApps() {
+          const appList = document.getElementById('appList');
+          const apps = JSON.parse(localStorage.getItem('apps')) || [];
+          apps.forEach(app => {
+              const newLink = document.createElement('a');
+              newLink.href = app.url;
+              newLink.className = 'download-link';
+              newLink.download = app.name;
+              newLink.innerText = 'Скачать ' + app.name;
+              appList.appendChild(newLink); // Добавляем приложение в список
+          });
+      }
+  </script>
 </body>
 </html>
