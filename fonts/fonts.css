@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Bounded';
+    src: url('Bounded-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bounded';
+    src: url('Bounded-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bounded';
+    src: url('Bounded-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bounded';
+    src: url('Bounded-Variable.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+} 
